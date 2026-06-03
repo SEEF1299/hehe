@@ -1,5 +1,8 @@
-import time
+import os
 
-while True:
-    print("السيرفر شغال بنجاح 24 ساعة...")
-    time.sleep(10)  # غيبقى يطبع هاد الجملة كل 10 ثواني بلا ما يوقف
+# الكود دابا غيجيب حسابك مخبي ومحمي من إعدادات غيت هاب نيشان
+GRASS_USERNAME = os.environ.get('GRASS_USER')
+GRASS_PASSWORD = os.environ.get('GRASS_PASS')
+
+print(f"جاري تسجيل الدخول لحساب Grass: {GRASS_USERNAME}")
+# وتكمل باقي كود التعدين...
