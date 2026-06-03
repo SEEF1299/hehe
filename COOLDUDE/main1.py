@@ -4,21 +4,23 @@ import time
 import uuid
 import httpx
 
-# جلب المعلومات من الـ Secrets ديال GitHub
-USER_ID = os.environ.get('GRASS_USER') # حط الـ ID ديالك فـ الـ Secret
-# ملاحظة: Grass كيخدم بـ User ID ماشي الباسورد فـ السكريبتات
-# إيلا كان عندك Token، بدلو فـ خانة الـ Authorization
+# جلب الـ User ID من الـ Secrets اللي صايبنا فـ GitHub
+USER_ID = os.environ.get('GRASS_USER')
 
 async def send_ping():
+    # هاد الوقت كيعاون السكربت باش يعرف وقتاش يخرج قبل ما يقطع عليه GitHub
     start_time = time.time()
-    print(f"--- انطلاق التعدين لـ Grass ---")
     
-    # الحلقة اللي ما كتسالاش
+    print(f"--- 🚀 انطلاق التعدين لـ Grass ---")
+    print(f"--- 🆔 User ID: {USER_ID} ---")
+    
+    # حلقة غير منتهية لجمع النقط
     while True:
         try:
-            # التحقق من الوقت (5 ساعات و 50 دقيقة)
+            # التحقق من الوقت (5 ساعات و 50 دقيقة بالثواني)
+            # هادشي باش يخرج السكربت قبل ما يقطع عليه GitHub الخدمة (الحد هو 6 ساعات)
             if time.time() - start_time > 21000:
-                print("--- السكربت وصل للحد الأقصى، إغلاق نظيف ---")
+                print("--- ⏱️ السكربت وصل للحد الأقصى، إغلاق نظيف باش يعاود يشعل الـ Cron ---")
                 break
             
             # محاكاة الاتصال
@@ -32,14 +34,15 @@ async def send_ping():
             async with httpx.AsyncClient() as client:
                 response = await client.post(url, json=payload, timeout=10)
                 if response.status_code == 200:
-                    print(f"[{time.strftime('%H:%M:%S')}] تم إرسال الـ Ping بنجاح! النقط تتجمع...")
+                    print(f"✅ [{time.strftime('%H:%M:%S')}] تم إرسال الـ Ping بنجاح! النقط تتجمع...")
                 else:
-                    print(f"فشل الاتصال: {response.status_code}")
+                    print(f"❌ فشل الاتصال: {response.status_code}")
                     
         except Exception as e:
-            print(f"خطأ: {e}")
+            print(f"⚠️ خطأ: {e}")
             
-        await asyncio.sleep(60) # يصيفط بينغ كل دقيقة
+        # كيتسنى دقيقة بين كل Ping و Ping
+        await asyncio.sleep(60)
 
 if __name__ == "__main__":
     asyncio.run(send_ping())
