@@ -1,9 +1,9 @@
 name: DePIN Mining Factory
 
 on:
-  workflow_dispatch: # هادي كتخليك تشعل السيرفر بيدك بـ كليك واحدة
+  workflow_dispatch:
   schedule:
-    - cron: '0 */4 * * *' # هادي لقطة الذكاء: كتعاود تشغل السيرفر أوتوماتيكياً كل 4 ساعات باش ما يطفاش كاع وأنت مسافر!
+    - cron: '0 */4 * * *'
 
 jobs:
   mine:
@@ -15,13 +15,15 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-node-version: '3.10'
+        python-version: '3.10'
 
     - name: Install Tools
       run: |
         pip install httpx asyncio setuptools
 
     - name: Run Multi Node Mining
+      env:
+        GRASS_USER: ${{ secrets.GRASS_USER }}
+        GRASS_PASS: ${{ secrets.GRASS_PASS }}
       run: |
-        # هنا السيرفر غيشغل ملف البوت الجامع ديالك
-        python COOLDUDE/main.py
+        python COOLDUDE/main1.py
