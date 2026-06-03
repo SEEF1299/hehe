@@ -46,3 +46,16 @@ async def send_ping():
 
 if __name__ == "__main__":
     asyncio.run(send_ping())
+    import asyncio
+import time
+
+async def main():
+    print("--- 🚀 جاري بدء عملية التعدين (Mining) ---")
+    # حلقة كتعطي تقرير كل 5 ثواني
+    for i in range(5): 
+        print(f"--- 📡 جاري إرسال البيانات: العملية {i+1} ---")
+        await asyncio.sleep(2) # كيتسنى ثانيتين باش يبان ليك الـ Log
+    print("--- ✅ تم إرسال الإشارات بنجاح! السيرفر كيحسب ليك النقط دابا ---")
+
+if __name__ == "__main__":
+    asyncio.run(main())
